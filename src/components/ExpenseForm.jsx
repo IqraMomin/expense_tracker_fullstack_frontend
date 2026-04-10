@@ -9,31 +9,36 @@ function ExpenseForm() {
     const expenseCtx = useContext(ExpenseContext);
     const isEdit = expenseCtx.isEdit;
 
-    useEffect(()=>{
-        if(isEdit){
-            setAmount(isEdit.amount||"");
-            setDate(isEdit.date||"");
-            setDescription(isEdit.description||"");
-            setType(isEdit.type||"");
-        }else{
+    useEffect(() => {
+        if (isEdit) {
+            const formattedDate = new Date(isEdit.date)
+                .toISOString()
+                .split('T')[0];
+
+            setDate(formattedDate);
+            setAmount(isEdit.amount || "");
+            setDate(isEdit.date || "");
+            setDescription(isEdit.description || "");
+            setType(formattedDate || "");
+        } else {
             resetForm();
         }
-    },[isEdit])
+    }, [isEdit])
 
-    const formSubmitHandler = (e)=>{
+    const formSubmitHandler = (e) => {
         e.preventDefault();
-        const expense = {amount,date,type,description}
-        
-        if(isEdit){
-            expenseCtx.updateExpense(isEdit.id,expense);
+        const expense = { amount, date, type, description }
+
+        if (isEdit) {
+            expenseCtx.updateExpense(isEdit.id, expense);
             expenseCtx.isEditHandler(null);
-        }else{
+        } else {
             expenseCtx.addExpense(expense);
         }
         resetForm();
     }
 
-    const resetForm = ()=>{
+    const resetForm = () => {
         setAmount("");
         setDate("");
         setDescription("");
@@ -54,10 +59,10 @@ function ExpenseForm() {
                 <div>
                     <label htmlFor='type'>Expense Type : </label>
                     <select name='expense' value={type} onChange={(e) => { setType(e.target.value) }}>
-                    <option value="groceries">Groceries</option>
-                    <option value="travel">Travel</option>
-                    <option value="utilities">Utilities</option>
-                    <option value="health">Health</option>
+                        <option value="groceries">Groceries</option>
+                        <option value="travel">Travel</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="health">Health</option>
                     </select>
 
                 </div>
