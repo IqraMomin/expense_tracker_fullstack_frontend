@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { ExpenseContext } from '../context/expenseContext';
 
 function ExpenseForm() {
     const [amount, setAmount] = useState("");
     const [date, setDate] = useState("");
     const [type, setType] = useState("");
     const [description, setDescription] = useState("");
+    const expenseCtx = useContext(ExpenseContext);
+    const isEdit = expenseCtx.isEdit;
 
     const formSubmitHandler = (e)=>{
         e.preventDefault();
-        const data = {amount,date,type,description}
-        console.log(data);
+        const expense = {amount,date,type,description}
+        expenseCtx.addExpense(expense);
+        resetForm();
     }
 
     const resetForm = ()=>{
