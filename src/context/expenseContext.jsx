@@ -22,8 +22,30 @@ export const ExpenseProvider = ({children})=>{
         
     }
 
+    const deleteExpense =async (id)=>{
+        try{
+            const res = await axios.delete(`http://localhost:3000/expenses/deleteExpense/${id}`);
+            console.log(res.data);
+            setExpenses(prev=>prev.filter(ele=>ele.id!==id));
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
+    const getAllExpenses = async()=>{
+        try{
+            const res = await axios.get(`http://localhost:3000/expenses/`);
+            console.log(res.data);
+            setExpenses(res.data);
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
     return (
-        <ExpenseContext.Provider value={{expenses,isEdit,isEditHandler,addExpense}}>
+        <ExpenseContext.Provider value={{expenses,isEdit,isEditHandler,addExpense,deleteExpense,getAllExpenses}}>
             {children}
             </ExpenseContext.Provider>
     )
