@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ExpenseContext } from '../context/expenseContext';
 
 function ExpenseForm() {
@@ -9,10 +9,27 @@ function ExpenseForm() {
     const expenseCtx = useContext(ExpenseContext);
     const isEdit = expenseCtx.isEdit;
 
+    useEffect(()=>{
+        if(isEdit){
+            setAmount(isEdit.amount||"");
+            setDate(isEdit.date||"");
+            setDescription(isEdit.description||"");
+            setType(isEdit.type||"");
+        }else{
+            resetForm();
+        }
+    },[isEdit])
+
     const formSubmitHandler = (e)=>{
         e.preventDefault();
         const expense = {amount,date,type,description}
-        expenseCtx.addExpense(expense);
+        
+        if(isEdit){
+            expenseCtx.updateExpense(isEdit.id,expense);
+            expenseCtx.isEditHandler(null);
+        }else{
+            expenseCtx.addExpense(expense);
+        }
         resetForm();
     }
 
@@ -49,7 +66,7 @@ function ExpenseForm() {
                     <input id='date' value={date} onChange={(e) => { setDate(e.target.value) }} type='date' />
                 </div>
                 <div>
-                    <button type='submit'>Add Expense</button>
+                    <button type='submit'>{isEdit ? "Edit Expense" : "Add Expense"}</button>
                 </div>
 
 

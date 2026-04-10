@@ -44,8 +44,19 @@ export const ExpenseProvider = ({children})=>{
         }
     }
 
+    const updateExpense = async(id,expense)=>{
+        try{
+            const res = await axios.put(`http://localhost:3000/expenses/updateExpense/${id}`,expense);
+            console.log(res.data);
+            setExpenses(prev=>prev.map(ele=>ele.id===id ? {...expense,id}:ele));
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
     return (
-        <ExpenseContext.Provider value={{expenses,isEdit,isEditHandler,addExpense,deleteExpense,getAllExpenses}}>
+        <ExpenseContext.Provider value={{expenses,isEdit,isEditHandler,addExpense,deleteExpense,getAllExpenses,updateExpense}}>
             {children}
             </ExpenseContext.Provider>
     )

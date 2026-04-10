@@ -6,10 +6,10 @@ function ExpenseList() {
     const expenseCtx = useContext(ExpenseContext);
 
     const editExpenseHandler = (expense)=>{
-
+        expenseCtx.isEditHandler(expense);
     }
     const deleteExpenseHandler = (id)=>{
-        
+        expenseCtx.deleteExpense(id);
     }
     
     return (
